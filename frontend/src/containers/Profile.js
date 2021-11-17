@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Hoc from "../hoc/hoc";
 
+
+
+
 class Profile extends React.Component {
   render() {
     if (this.props.token === null) {
@@ -13,14 +16,14 @@ class Profile extends React.Component {
         {this.props.username !== null ? (
           <Hoc>
             <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-            <p>{"NAME"}</p>
+            <p>{this.props.name}</p>
             <div className="social-media">
               <i className="fa fa-facebook" aria-hidden="true" />
               <i className="fa fa-twitter" aria-hidden="true" />
               <i className="fa fa-instagram" aria-hidden="true" />
             </div>
           </Hoc>
-        ) : null}
+        ) : null} 
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import WebSocketInstance from '../websocket';
 import Hoc from '../hoc/hoc';
 import Profile from './Profile';
+import { message } from 'antd';
 
 class Chat extends React.Component {
     state = {message: ''}
@@ -100,7 +101,6 @@ class Chat extends React.Component {
     
     renderMessages = (messages) => {
         const currentUser = this.props.username;
-        
         return messages.map((message, i, arr) => (
             <li 
                 key={message.id} 
@@ -132,9 +132,14 @@ class Chat extends React.Component {
     }
     
     render() {
+        const messages_arr = this.props.messages;
+        const message_arr = messages_arr.map(p=>p.author);
+        const result = message_arr.filter(x => x !== this.props.username);
         return (
             <Hoc>
-                <Profile />
+                <Profile
+                name = {result[0]}
+                />
                 <div className="messages">
                     <ul id="chat-log">
                     { 
