@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import BaseRouter from "./routes";
 import Sidepanel from "./containers/Sidepanel";
-import Profile from "./containers/Profile";
 import AddChatModal from "./containers/Popup";
 import * as actions from "./store/actions/auth";
 import * as navActions from "./store/actions/nav";
@@ -34,7 +33,7 @@ class App extends React.Component {
               isVisible={this.props.showAddChatPopup}
               close={() => this.props.closeAddChatPopup()}
             />
-            <Profile />
+
             <BaseRouter />
           </div>
         </div>

@@ -40,6 +40,8 @@ class Sidepanel extends React.Component {
     this.props.addChat();
   }
 
+
+
   changeForm = () => {
     this.setState({ loginForm: !this.state.loginForm });
   };
@@ -60,15 +62,22 @@ class Sidepanel extends React.Component {
 
   render() {
     let activeChats = this.props.chats.map(c => {
+
+      var arr = c.participants;
+      var indexOf_user = arr.indexOf(this.props.username);
+      arr.splice(indexOf_user,1);
+
+      if(this.props.isAuthenticated){
       return (
         <Contact
           key={c.id}
           name={c.participants[0]}
           picURL="http://emilcarlsson.se/assets/louislitt.png"
-          status="busy"
+          status="online"
           chatURL={`/${c.id}`}
         />
       );
+    }
     });
     return (
       <div id="sidepanel">
@@ -80,7 +89,7 @@ class Sidepanel extends React.Component {
               className="online"
               alt=""
             />
-            <p>Mike Ross</p>
+            <p>{this.props.username}</p>
             <i
               className="fa fa-chevron-down expand-button"
               aria-hidden="true"
