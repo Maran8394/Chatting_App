@@ -90,10 +90,10 @@ class Sidepanel extends React.Component {
               alt=""
             />
             <p>{this.props.username}</p>
-            <i
+            {/* <i
               className="fa fa-chevron-down expand-button"
               aria-hidden="true"
-            />
+            /> */}
             <div id="status-options">
               <ul>
                 <li id="status-online" className="active">
