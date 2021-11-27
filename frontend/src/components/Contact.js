@@ -15,5 +15,4 @@ const Contact = (props) => (
         </li>
     </NavLink>
 );
-
 export default Contact;

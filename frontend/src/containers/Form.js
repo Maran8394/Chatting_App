@@ -20,7 +20,6 @@ class HorizontalAddChatForm extends React.Component {
   };
 
   handleChange = value => {
-    console.log("value",value);
     this.setState({
       usernames: value
     });
@@ -73,6 +72,9 @@ class HorizontalAddChatForm extends React.Component {
 
     const userNameError =
       isFieldTouched("userName") && getFieldError("userName");
+
+
+
     return (
       <Form layout="inline" onSubmit={this.handleSubmit}>
         {this.state.error ? `${this.state.error}` : null}

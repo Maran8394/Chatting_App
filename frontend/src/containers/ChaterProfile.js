@@ -11,6 +11,7 @@ class Profile extends React.Component {
     if (this.props.token === null) {
       return <Redirect to="/" />;
     }
+
     return (
       <div className="contact-profile">
         {this.props.username !== null ? (

@@ -21,6 +21,7 @@ class App extends React.Component {
       this.props.setMessages.bind(this),
       this.props.addMessage.bind(this)
     );
+    
   }
 
   render() {

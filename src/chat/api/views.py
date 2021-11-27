@@ -1,15 +1,15 @@
-from django.db.models import query
+from django.http.response import HttpResponse
 from rest_framework import permissions
 from rest_framework.generics import (ListAPIView,RetrieveAPIView, CreateAPIView,DestroyAPIView,UpdateAPIView)
-from rest_framework.serializers import Serializer
-from chat.models import Chat,Contact
-from . serializers import ChatSerializer
+from rest_framework.response import Response
+from chat.models import Chat,Contact, NewUser
+from . serializers import ChatSerializer,UserDetailsSerializer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-
+from rest_framework.viewsets import ViewSet
+from rest_framework.views import APIView
 
 User = get_user_model()
-
 def get_user_contact(username):
     user = get_object_or_404(User, username = username)
     contact = get_object_or_404(Contact, user=user)
@@ -49,3 +49,21 @@ class ChatDeleteView(DestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
     permisson_classes = (permissions.IsAuthenticated,)
+    
+class UserView(APIView):
+    def get(self, request):
+        q = NewUser.objects.all()
+        serializer = UserDetailsSerializer(q, many=True)
+        return Response(serializer.data)
+
+
+
+
+class UserViewPk(APIView):
+    serializer_class = UserDetailsSerializer
+    permisson_classes = (permissions.IsAdminUser,)
+
+    def get(self,request,username):
+        q = get_object_or_404(NewUser, username=username)
+        serializer = UserDetailsSerializer(q)
+        return Response(serializer.data)

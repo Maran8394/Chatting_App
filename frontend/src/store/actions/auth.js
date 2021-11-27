@@ -8,11 +8,11 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (username, token) => {
+export const authSuccess = (username,token) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token: token,
-    username: username
+    username: username,
   };
 };
 
@@ -26,6 +26,7 @@ export const authFail = error => {
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("username");
+  localStorage.removeItem("email");
   localStorage.removeItem("expirationDate");
   return {
     type: actionTypes.AUTH_LOGOUT
@@ -40,7 +41,8 @@ export const checkAuthTimeout = expirationTime => {
   };
 };
 
-export const authLogin = (username, password) => {
+export const authLogin = (username,password) => {
+  const user = username;
   return dispatch => {
     dispatch(authStart());
     axios
@@ -63,13 +65,13 @@ export const authLogin = (username, password) => {
   };
 };
 
-export const authSignup = (username, email, password1, password2) => {
+export const authSignup = (username,email,password1, password2) => {
   return dispatch => {
     dispatch(authStart());
     axios
       .post(`${HOST_URL}/rest-auth/registration/`, {
         username: username,
-        email: email,
+        email:email,
         password1: password1,
         password2: password2
       })

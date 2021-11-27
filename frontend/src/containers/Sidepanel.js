@@ -5,12 +5,15 @@ import * as actions from "../store/actions/auth";
 import * as navActions from "../store/actions/nav";
 import * as messageActions from "../store/actions/message";
 import Contact from "../components/Contact";
-
+import UserProfile from "./User_profile";
+import { HOST_URL } from "../settings";
+import axios from 'axios';
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 class Sidepanel extends React.Component {
   state = {
-    loginForm: true
+    loginForm: true,
+    user:{}
   };
 
   waitForAuthDetails() {
@@ -34,6 +37,14 @@ class Sidepanel extends React.Component {
 
   componentDidMount() {
     this.waitForAuthDetails();
+
+    axios.get(`${HOST_URL}/chat/profile/${localStorage.getItem('username')}`)
+    .then(res => {
+      const user = res.data;
+      this.setState({ user });
+
+    })
+      
   }
 
   openAddChatPopup() {
@@ -61,17 +72,16 @@ class Sidepanel extends React.Component {
   };
 
   render() {
+    console.log(this.state.user.profile_pic);
     let activeChats = this.props.chats.map(c => {
-
       var arr = c.participants;
       var indexOf_user = arr.indexOf(this.props.username);
       arr.splice(indexOf_user,1);
-
       if(this.props.isAuthenticated){
       return (
         <Contact
           key={c.id}
-          name={c.participants[0]}
+          name={arr}
           picURL="http://emilcarlsson.se/assets/louislitt.png"
           status="online"
           chatURL={`/${c.id}`}
@@ -83,33 +93,14 @@ class Sidepanel extends React.Component {
       <div id="sidepanel">
         <div id="profile">
           <div className="wrap">
-            <img
-              id="profile-img"
-              src="http://emilcarlsson.se/assets/mikeross.png"
-              className="online"
-              alt=""
-            />
-            <p>{this.props.username}</p>
-            {/* <i
-              className="fa fa-chevron-down expand-button"
-              aria-hidden="true"
-            /> */}
-            <div id="status-options">
-              <ul>
-                <li id="status-online" className="active">
-                  <span className="status-circle" /> <p>Online</p>
-                </li>
-                <li id="status-away">
-                  <span className="status-circle" /> <p>Away</p>
-                </li>
-                <li id="status-busy">
-                  <span className="status-circle" /> <p>Busy</p>
-                </li>
-                <li id="status-offline">
-                  <span className="status-circle" /> <p>Offline</p>
-                </li>
-              </ul>
-            </div>
+            {this.props.isAuthenticated?(
+            <UserProfile name={this.state.user.username}
+            profile_pic = {this.state.user.profile_pic}
+            status = {this.state.user.status}
+             />)
+            :(<UserProfile
+              profile_pic={"/media/profile_pics/dummyImage.jpg"}
+              status={"offline"} />)}
             <div id="expanded">
               {this.props.loading ? (
                 <Spin indicator={antIcon} />

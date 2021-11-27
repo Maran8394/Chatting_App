@@ -2,27 +2,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import WebSocketInstance from '../websocket';
 import Hoc from '../hoc/hoc';
-import Profile from './Profile';
-import { message } from 'antd';
+import ChaterProfile from './ChaterProfile';
+import { HOST_URL } from "../settings";
+
 
 class Chat extends React.Component {
-    state = {message: ''}
+    state = {
+        message: '',
+}   
+
 
     initialiseChat(){
         this.waitForSocketConnection(() => {
-            // WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this));
             WebSocketInstance.fetchMessages(this.props.username,this.props.match.params.chatID,);
           });
-          
           WebSocketInstance.connect(this.props.match.params.chatID);
     }
 
     constructor(props) {
         super(props);
         this.initialiseChat();
+        
             
     }
-
+    
     componentWillReceiveProps(newProps){
         if(this.props.match.params.chatID !==newProps.match.params.chatID){
             WebSocketInstance.disconnect();
@@ -54,14 +57,6 @@ class Chat extends React.Component {
             }
         }, 100);
     }
-    
-    // addMessage(message) {
-    //     this.setState({ messages: [...this.state.messages, message] });
-    // }
-    
-    // setMessages(messages) {
-    //     this.setState({ messages: messages.reverse()});
-    // }
     
     messageChangeHandler = (event) =>  {
         this.setState({
@@ -101,12 +96,13 @@ class Chat extends React.Component {
     
     renderMessages = (messages) => {
         const currentUser = this.props.username;
+        
         return messages.map((message, i, arr) => (
             <li 
                 key={message.id} 
                 style={{marginBottom: arr.length - 1 === i ? '300px' : '15px'}}
                 className={message.author === currentUser ? 'sent': 'replies' }>
-                <img src="http://emilcarlsson.se/assets/mikeross.png" />
+                <img src={"https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"} />
                 <p>{message.content}
                     <br />
                     <small>
@@ -124,22 +120,33 @@ class Chat extends React.Component {
     }
 
     componentDidMount() {
+        
         this.scrollToBottom();
+        fetch(`${HOST_URL}/chat/profile/${this.props.username}`)
+        .then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                    items: json,
+                    DataisLoaded: true
+                    
+                });
+            })
     }
 
     componentDidUpdate() {
         this.scrollToBottom();
     }
+     
     
     render() {
+        const { DataisLoaded, items } = this.state;
         const messages_arr = this.props.messages;
         const message_arr = messages_arr.map(p=>p.author);
         const result = message_arr.filter(x => x !== this.props.username);
+        // console.log(items);
         return (
             <Hoc>
-                <Profile
-                name = {result[0]}
-                />
+                <ChaterProfile name = {result}/>
                 <div className="messages">
                     <ul id="chat-log">
                     { 
@@ -174,11 +181,12 @@ class Chat extends React.Component {
     };
 }
 
+
 const mapStateToProps = state => {
     return {
         username: state.auth.username,
-        messages : state.message.messages
+        messages : state.message.messages,    
     };
 };
-  
+
 export default connect(mapStateToProps)(Chat);

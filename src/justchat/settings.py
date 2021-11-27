@@ -35,8 +35,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
-
-    'chat'
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +146,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
+
+AUTH_USER_MODEL = 'chat.NewUser'
+
 CORS_ORIGIN_ALLOW_ALL=True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
