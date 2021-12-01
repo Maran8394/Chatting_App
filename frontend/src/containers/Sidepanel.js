@@ -4,17 +4,24 @@ import { connect } from "react-redux";
 import * as actions from "../store/actions/auth";
 import * as navActions from "../store/actions/nav";
 import * as messageActions from "../store/actions/message";
-import Contact from "../components/Contact";
 import UserProfile from "./User_profile";
 import { HOST_URL } from "../settings";
 import axios from 'axios';
+import "babel-polyfill";
+import Sample from "./Sample";
+
+
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 class Sidepanel extends React.Component {
   state = {
     loginForm: true,
-    user:{}
+    user:{},
+    friend : {},
+    
   };
+
+  
 
   waitForAuthDetails() {
     const component = this;
@@ -35,16 +42,18 @@ class Sidepanel extends React.Component {
     }, 100);
   }
 
+  
+
+
   componentDidMount() {
     this.waitForAuthDetails();
-
+  
     axios.get(`${HOST_URL}/chat/profile/${localStorage.getItem('username')}`)
     .then(res => {
       const user = res.data;
       this.setState({ user });
-
     })
-      
+
   }
 
   openAddChatPopup() {
@@ -71,23 +80,24 @@ class Sidepanel extends React.Component {
     }
   };
 
+
   render() {
-    console.log(this.state.user.profile_pic);
+
     let activeChats = this.props.chats.map(c => {
-      var arr = c.participants;
-      var indexOf_user = arr.indexOf(this.props.username);
-      arr.splice(indexOf_user,1);
-      if(this.props.isAuthenticated){
-      return (
-        <Contact
-          key={c.id}
-          name={arr}
-          picURL="http://emilcarlsson.se/assets/louislitt.png"
-          status="online"
-          chatURL={`/${c.id}`}
-        />
-      );
-    }
+            var arr = c.participants;
+            var indexOf_user = arr.indexOf(this.props.username);
+            arr.splice(indexOf_user,1);
+            if(this.props.isAuthenticated){
+              return (          
+                <Sample
+                key={c.id}
+                  name={arr}
+                  picURL="http://emilcarlsson.se/assets/louislitt.png"
+                  status="online"
+                  chatURL={`/${c.id}`}
+                  />
+              );
+  }
     });
     return (
       <div id="sidepanel">

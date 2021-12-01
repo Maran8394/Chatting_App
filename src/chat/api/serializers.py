@@ -6,9 +6,11 @@ from chat.views import get_user_contact
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewUser
-        # fields = '__all__'
         fields = ('id','username','email','status','profile_pic','about')
         read_only = ('username','email','status','profile_pic','about')
+
+
+
 
 
 class ContactSerializer(serializers.StringRelatedField):
@@ -18,7 +20,7 @@ class ContactSerializer(serializers.StringRelatedField):
 
 class ChatSerializer(serializers.ModelSerializer):
     participants = ContactSerializer(many=True)
-
+    print(participants)
     class Meta:
         model = Chat
         fields = ('id', 'messages', 'participants')

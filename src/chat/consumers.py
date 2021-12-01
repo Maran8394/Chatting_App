@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
-from .models import Contact, Message, NewUser
+from .models import Message
 from . views import get_last_10_messages, get_user_contact, get_current_chat
 
 User = get_user_model()
@@ -20,7 +20,6 @@ class ChatConsumer(WebsocketConsumer):
         self.send_message(content)
 
     def new_message(self, data):
-        print(data)
         user_contact= get_user_contact(data['from'])
         message = Message.objects.create(
             contact=user_contact, 

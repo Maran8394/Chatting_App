@@ -3,28 +3,16 @@ import { HOST_URL } from "../settings";
 import axios from 'axios';
 
 
-
-
-
 class UserProfile extends React.Component{
 
   state = {
-    user :{
-
-    }
+    user :{}
   }
 
-  constructor(props) {
-    super(props);
-      
-}
-
-
-  componentDidMount() {
-    
-  }
+  
 
   render(){
+    let s = document.getElementsByClassName("status")
     return (
       <div>
           <img
@@ -37,16 +25,16 @@ class UserProfile extends React.Component{
           <div id="status-options">
             <ul>
               <li id="status-online" className="active">
-                <span className="status-circle" /> <p>Online</p>
+                <span className="status-circle" /> <p className="status">Online</p>
               </li>
               <li id="status-away">
-                <span className="status-circle" /> <p>Away</p>
+                <span className="status-circle" /> <p className="status">Away</p>
               </li>
               <li id="status-busy">
-                <span className="status-circle" /> <p>Busy</p>
+                <span className="status-circle" /> <p className="status">Busy</p>
               </li>
               <li id="status-offline">
-                <span className="status-circle" /> <p>Offline</p>
+                <span className="status-circle" /> <p className="status">Offline</p>
               </li>
             </ul>
           </div>
