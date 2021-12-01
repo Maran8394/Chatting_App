@@ -20,7 +20,6 @@ class Profile extends React.Component {
         .then(res =>{
             this.setState({user:res.data})
         })
-console.log(this.state)
     return (
       <div className="contact-profile">
         {this.props.username !== null ? (

@@ -100,7 +100,6 @@ class Chat extends React.Component {
     
     renderMessages = (messages) => {
         const currentUser = this.props.username;
-        console.log(this.props)
         return messages.map((message, i, arr) => (
             <li 
                 key={message.id} 
@@ -147,10 +146,9 @@ class Chat extends React.Component {
         const messages_arr = this.props.messages;
         const message_arr = messages_arr.map(p=>p.author);
         const result = message_arr.filter(x => x !== this.props.username);
-        // console.log(items);
         return (
             <Hoc>
-                <ChaterProfile name = {result}/>
+                <ChaterProfile name = {result[0]}/>
                 <div className="messages">
                     <ul id="chat-log">
                         { 
